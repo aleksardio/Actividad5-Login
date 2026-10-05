@@ -1,0 +1,16 @@
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px; 
+    border: none;
+    border-radius: 12px;
+    background-color: white;
+}
+
+.btn-primary {
+    padding: 10px;
+    border-radius: 8px;
+}
