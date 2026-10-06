@@ -10,9 +10,6 @@ body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
-/* ==========================================
-   ESTRUCTURA PRINCIPAL (FLEXBOX)
-   ========================================== */
 #wrapper {
   display: flex;
   width: 100vw;
@@ -20,7 +17,6 @@ body {
   align-items: stretch;
 }
 
-/* Sidebar lateral fijo */
 #sidebar {
   min-width: 250px;
   max-width: 250px;
@@ -31,7 +27,6 @@ body {
   flex-direction: column;
 }
 
-/* Ocultar sidebar al presionar botón hamburguesa */
 #sidebar.active {
   margin-left: -250px;
 }
@@ -75,7 +70,6 @@ body {
   background-color: #1a1e21;
 }
 
-/* Contenedor derecho */
 #content {
   flex: 1;
   min-width: 0;
@@ -83,7 +77,6 @@ body {
   flex-direction: column;
 }
 
-/* Top Navbar */
 .top-navbar {
   background-color: #ffffff;
   border-bottom: 1px solid #dee2e6;
@@ -92,10 +85,6 @@ body {
   align-items: center;
   justify-content: space-between;
 }
-
-/* ==========================================
-   COMPONENTE CALENDARIO (DATEPICKER)
-   ========================================== */
 .datepicker-container {
   position: relative;
 }

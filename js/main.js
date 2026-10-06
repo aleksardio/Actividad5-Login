@@ -110,14 +110,12 @@ class DatePicker {
     const firstDay = new Date(year, month, 1).getDay();
     const totalDays = new Date(year, month + 1, 0).getDate();
 
-    // Celdas vacías previas
     for (let i = 0; i < firstDay; i++) {
       const emptyCell = document.createElement('div');
       emptyCell.className = 'datepicker-day empty';
       this.daysContainer.appendChild(emptyCell);
     }
 
-    // Días del mes
     for (let d = 1; d <= totalDays; d++) {
       const dayBtn = document.createElement('button');
       dayBtn.type = 'button';
@@ -157,12 +155,38 @@ class DatePicker {
   }
 }
 
-// ==========================================
-// FLUJO Y EVENTOS DEL DOM
-// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
+  const usuarioSesion = localStorage.getItem('usuarioSesion');
+  if (!usuarioSesion) {
+      window.location.href = 'login.html';
+      return;
+  }
 
-  // 1. Alternar Sidebar con Botón Hamburguesa
+  const nombreCorto = usuarioSesion.split('@')[0];
+  const navbarContainer = document.getElementById('user-navbar-container');
+
+  if (navbarContainer) {
+      navbarContainer.innerHTML = `
+          <div class="dropdown">
+              <button class="btn btn-dark dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa-solid fa-circle-user fs-5"></i>
+                  <span>${nombreCorto}</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow">
+                  <li><h6 class="dropdown-header">Conectado como: <br> <small class="text-muted">${usuarioSesion}</small></h6></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item text-danger" href="#" id="btnCerrarSesion"><i class="fa-solid fa-right-from-bracket me-2"></i>Salir del sistema</a></li>
+              </ul>
+          </div>
+      `;
+
+      document.getElementById('btnCerrarSesion').addEventListener('click', function(e) {
+          e.preventDefault();
+          localStorage.removeItem('usuarioSesion');
+          window.location.href = 'login.html';
+      });
+  }
+  
   const sidebar = document.getElementById('sidebar');
   const sidebarBtn = document.getElementById('sidebarCollapse');
 
@@ -172,7 +196,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 2. Validación de Captura de Usuarios usando utileria.js
   const formUsuario = document.getElementById('formUsuario');
   formUsuario.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -202,7 +225,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 3. Inicializar DatePicker para Alumnos
   new DatePicker({
     inputId: 'fechaNacAlumno',
     btnToggleId: 'btnToggleCalendar',
@@ -218,13 +240,11 @@ document.addEventListener('DOMContentLoaded', () => {
     maxYear: new Date().getFullYear()
   });
 
-  // 4. Formulario de Alumnos y Modal de Edad
   const formAlumno = document.getElementById('formAlumno');
   const numControlInput = document.getElementById('numControl');
   const fechaNacInput = document.getElementById('fechaNacAlumno');
   const modalEdad = new bootstrap.Modal(document.getElementById('modalEdad'));
 
-  // Permitir sólo dígitos
   numControlInput.addEventListener('input', function() {
     this.value = this.value.replace(/\D/g, '');
   });
@@ -235,7 +255,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const numCtrl = numControlInput.value.trim();
     const fechaNac = fechaNacInput.value.trim();
 
-    // Validaciones con funciones de utileria.js
     const esControlValido = /^\d+$/.test(numCtrl) && validarLongitud(numCtrl, 6);
     const esFechaValida = fechaNac !== '';
 
