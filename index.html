@@ -11,7 +11,7 @@
 <body>
 
   <div id="wrapper">
-    <!-- SIDEBAR -->
+  
     <nav id="sidebar">
       <div class="sidebar-header">
         <h4><i class="fa-solid fa-layer-group me-2"></i> Menú del Sistema</h4>
@@ -32,12 +32,33 @@
     </nav>
 
     <div id="content">
-      <header class="top-navbar shadow-sm">
+    
+      <header class="top-navbar shadow-sm d-flex align-items-center justify-content-between px-3 w-100">
         <button type="button" id="sidebarCollapse" class="btn btn-outline-dark btn-sm">
           <i class="fa-solid fa-bars"></i>
         </button>
 
-        <div class="ms-auto" id="user-navbar-container"></div>
+        <div class="ms-auto" id="user-navbar-container">
+          <div class="dropdown">
+            <button class="btn btn-dark dropdown-toggle d-flex align-items-center gap-2" type="button" id="userDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-circle-user fs-5"></i>
+              <span id="navUserSpan">Usuario</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdownBtn">
+              <li>
+                <h6 class="dropdown-header">Conectado como:<br>
+                  <small class="text-muted text-break" id="navUserEmailSmall">usuario@ejemplo.com</small>
+                </h6>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item text-danger d-flex align-items-center gap-2" href="#" id="btnCerrarSesion">
+                  <i class="fa-solid fa-right-from-bracket"></i> Salir del sistema
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </header>
 
       <main class="container-fluid p-4">
@@ -66,11 +87,12 @@
                     <div class="invalid-feedback">Mínimo 8 caracteres, mayúscula, minúscula, número y símbolo.</div>
                   </div>
                   <button type="submit" class="btn btn-primary w-100">Guardar Usuario</button>
-                  <div id="msgUsuario" class="alert alert-success mt-3 d-none">¡Usuario registrado con éxito!</div>
                 </form>
               </div>
             </div>
           </div>
+
+       
           <div class="col-lg-6">
             <div class="card shadow-sm border-0">
               <div class="card-header bg-secondary text-white">
@@ -128,6 +150,7 @@
     </div>
   </div>
 
+  <!-- MODAL DE EDAD -->
   <div class="modal fade" id="modalEdad" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -139,6 +162,26 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="modal fade" id="modalUsuarioGuardado" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title"><i class="fa-solid fa-circle-check me-2"></i> Registro Exitoso</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body text-center py-4">
+          <i class="fa-solid fa-user-check text-success fa-4x mb-3"></i>
+          <h4 class="mb-2">¡Usuario Guardado!</h4>
+          <p class="text-muted mb-0" id="modalUsuarioTexto">El usuario ha sido registrado correctamente en el sistema.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-bs-dismiss="modal">Aceptar</button>
         </div>
       </div>
     </div>

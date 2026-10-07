@@ -156,37 +156,40 @@ class DatePicker {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const usuarioSesion = localStorage.getItem('usuarioSesion');
+
+
+  const usuarioSesion = localStorage.getItem('usuarioSesion') || localStorage.getItem('usuario');
   if (!usuarioSesion) {
-      window.location.href = 'login.html';
-      return;
+    window.location.href = 'login.html';
+    return;
   }
 
   const nombreCorto = usuarioSesion.split('@')[0];
   const navbarContainer = document.getElementById('user-navbar-container');
 
   if (navbarContainer) {
-      navbarContainer.innerHTML = `
-          <div class="dropdown">
-              <button class="btn btn-dark dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="fa-solid fa-circle-user fs-5"></i>
-                  <span>${nombreCorto}</span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end shadow">
-                  <li><h6 class="dropdown-header">Conectado como: <br> <small class="text-muted">${usuarioSesion}</small></h6></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item text-danger" href="#" id="btnCerrarSesion"><i class="fa-solid fa-right-from-bracket me-2"></i>Salir del sistema</a></li>
-              </ul>
-          </div>
-      `;
+    navbarContainer.innerHTML = `
+      <div class="dropdown">
+        <button class="btn btn-dark dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fa-solid fa-circle-user fs-5"></i>
+          <span>${nombreCorto}</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow">
+          <li><h6 class="dropdown-header">Conectado como: <br> <small class="text-muted text-break">${usuarioSesion}</small></h6></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item text-danger" href="#" id="btnCerrarSesion"><i class="fa-solid fa-right-from-bracket me-2"></i>Salir del sistema</a></li>
+        </ul>
+      </div>
+    `;
 
-      document.getElementById('btnCerrarSesion').addEventListener('click', function(e) {
-          e.preventDefault();
-          localStorage.removeItem('usuarioSesion');
-          window.location.href = 'login.html';
-      });
+    document.getElementById('btnCerrarSesion').addEventListener('click', function(e) {
+      e.preventDefault();
+      localStorage.removeItem('usuarioSesion');
+      localStorage.removeItem('usuario');
+      window.location.href = 'login.html';
+    });
   }
-  
+
   const sidebar = document.getElementById('sidebar');
   const sidebarBtn = document.getElementById('sidebarCollapse');
 
@@ -197,13 +200,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const formUsuario = document.getElementById('formUsuario');
+  const modalUsuarioGuardadoElem = document.getElementById('modalUsuarioGuardado');
+  const modalUsuarioGuardado = new bootstrap.Modal(modalUsuarioGuardadoElem);
+
   formUsuario.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const nombre = document.getElementById('nombreUser');
     const correo = document.getElementById('correoUser');
     const pass = document.getElementById('passUser');
-    const msg = document.getElementById('msgUsuario');
 
     const esNombreValido = soloLetras(nombre.value.trim());
     const esCorreoValido = validarCorreo(correo.value.trim());
@@ -219,11 +224,20 @@ document.addEventListener('DOMContentLoaded', () => {
     pass.classList.toggle('is-valid', esPassValida);
 
     if (esNombreValido && esCorreoValido && esPassValida) {
-      msg.classList.remove('d-none');
-      formUsuario.reset();
-      setTimeout(() => msg.classList.add('d-none'), 3500);
+      document.getElementById('modalUsuarioTexto').textContent = 
+        `El usuario "${nombre.value.trim()}" con correo "${correo.value.trim()}" se guardó exitosamente.`;
+      
+      modalUsuarioGuardado.show();
     }
   });
+
+  modalUsuarioGuardadoElem.addEventListener('hidden.bs.modal', () => {
+    formUsuario.reset();
+    document.getElementById('nombreUser').classList.remove('is-valid', 'is-invalid');
+    document.getElementById('correoUser').classList.remove('is-valid', 'is-invalid');
+    document.getElementById('passUser').classList.remove('is-valid', 'is-invalid');
+  });
+
 
   new DatePicker({
     inputId: 'fechaNacAlumno',
@@ -243,7 +257,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const formAlumno = document.getElementById('formAlumno');
   const numControlInput = document.getElementById('numControl');
   const fechaNacInput = document.getElementById('fechaNacAlumno');
-  const modalEdad = new bootstrap.Modal(document.getElementById('modalEdad'));
+  const modalEdadElem = document.getElementById('modalEdad');
+  const modalEdad = new bootstrap.Modal(modalEdadElem);
 
   numControlInput.addEventListener('input', function() {
     this.value = this.value.replace(/\D/g, '');
@@ -282,6 +297,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       modalEdad.show();
     }
+  });
+
+  modalEdadElem.addEventListener('hidden.bs.modal', () => {
+    formAlumno.reset();
+    numControlInput.classList.remove('is-valid', 'is-invalid');
+    fechaNacInput.classList.remove('is-valid', 'is-invalid');
   });
 
 });
